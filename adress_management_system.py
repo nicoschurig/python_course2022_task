@@ -1,9 +1,11 @@
-from hashlib import new
 import tkinter as tk
+import pickle
 from tkinter import ttk, messagebox
 from tkinter import *
+from tkinter.messagebox import showinfo
+import os
 
-# ================================= Class ======================================================
+# ================================= Classes ======================================================
 class Person():
     def __init__(self, name, first_name, email, day, month, year):
         self._name = name
@@ -16,34 +18,58 @@ class Person():
 # ================================ Functions ===================================================
 person_list = []
 
+if (os.stat("data.bin").st_size != 0):
+    person_pickle = open("data.bin", "rb")
+    person_list = pickle.load(person_pickle)
+    person_pickle.close()
+
 def add():
     
     if (len(name_entry.get()) != 0 and 
         len(firstname_entry.get()) != 0 and  
         len(email_address_entry.get()) != 0 and 
         len(birthday_entry.get()) != 0):
-        try:
-            new_birthday = birthday_entry.get()
-            new_day = int(new_birthday[0:2])
-            new_month = int(new_birthday[3:5])
-            new_year = int(new_birthday[6:10])
-            person_list.append(Person(name_entry.get(), firstname_entry.get(), email_address_entry.get(), new_day, new_month, new_year))
+        
+        new_birthday = birthday_entry.get()
+        new_day = str(new_birthday[0:2])
+        new_month = str(new_birthday[3:5])
+        new_year = str(new_birthday[6:10])
+        person_list.append(Person(str(name_entry.get()), str(firstname_entry.get()), str(email_address_entry.get()), new_day, new_month, new_year))
 
-        except:
-            print("No valid value for birthday!")
+
+        person_pickle = open("Data.bin", "wb")
+        pickle.dump(person_list, person_pickle)
+        person_pickle.close()
+
+        show()
 
     else:
         print("You have to enter a value in each entry field!")
+
+    
+
+def show():
+    if (os.stat("data.bin").st_size != 0):
+        person_pickle = open("data.bin", "rb")
+        person_list = pickle.load(person_pickle)
+        person_pickle.close()
+
+        for item in listBox.get_children():
+            listBox.delete(item)
+
+        for person in person_list:
+            listBox.insert("", tk.END, values = (str(person._name), str(person._first_name), str(person._email), str(person._day) + "." + str(person._month) + "." + str(person._year)))
 
 
 
 # ================================== GUI =======================================================
 root = tk.Tk()
-root.geometry("1000x600")
+root.geometry("830x600")
 root.title("Address Management System")
+root.resizable(0, 0)
 
 title_label = ttk.Label(root, text = "Address Management System", font = (None, 40))
-title_label.pack()
+title_label.place(x = 175)
 
 # Data Labels:
 name_label = ttk.Label(root, text = "Name:", font = (None, 20), compound = "left")
@@ -80,5 +106,28 @@ Update_button.place(x = 170, y = 220)
 
 Delete_button = ttk.Button(root, text = "Delete", width = 10)
 Delete_button.place(x = 310, y = 220)
+
+# Listbox
+columns_tupel = ("Name", "First Name", "E-Mail", "Birthday" )
+listBox = ttk.Treeview(root, columns = columns_tupel, show = "headings")
+
+
+for col in columns_tupel:
+    listBox.heading(col, text = col)
+    listBox.grid(row = 1, column = 0, columnspan = 2)
+    listBox.place(x = 10, y = 300)
+
+def item_selected(event):
+    for selected_item in listBox.selection():
+        item = listBox.item(selected_item)
+        record = item['values']
+        # show a message
+        showinfo(title='Information', message=','.join(record))
+
+listBox.bind('<<TreeviewSelect>>', item_selected)
+
+show()  
+
+
 
 root.mainloop()
