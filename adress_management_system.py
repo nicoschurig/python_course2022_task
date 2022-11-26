@@ -36,7 +36,6 @@ def add():
         new_year = str(new_birthday[6:10])
         person_list.append(Person(str(name_entry.get()), str(firstname_entry.get()), str(email_address_entry.get()), new_day, new_month, new_year))
 
-
         person_pickle = open("Data.bin", "wb")
         pickle.dump(person_list, person_pickle)
         person_pickle.close()
@@ -46,7 +45,18 @@ def add():
     else:
         print("You have to enter a value in each entry field!")
 
-    
+def delete(): 
+
+    selected_iid = listBox.focus()
+    item_index = listBox.index(selected_iid)
+
+    del person_list[item_index]
+
+    person_pickle = open("Data.bin", "wb")
+    pickle.dump(person_list, person_pickle)
+    person_pickle.close()
+
+    show()
 
 def show():
     if (os.stat("data.bin").st_size != 0):
@@ -104,7 +114,7 @@ add_button.place(x = 30, y = 220)
 Update_button = ttk.Button(root, text = "Update", width = 10)
 Update_button.place(x = 170, y = 220)
 
-Delete_button = ttk.Button(root, text = "Delete", width = 10)
+Delete_button = ttk.Button(root, text = "Delete", width = 10, command = delete)
 Delete_button.place(x = 310, y = 220)
 
 # Listbox
