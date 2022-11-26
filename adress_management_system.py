@@ -1,3 +1,4 @@
+from hashlib import new
 import tkinter as tk
 from tkinter import ttk, messagebox
 from tkinter import *
@@ -11,6 +12,29 @@ class Person():
         self._day = day
         self._month = month
         self._year = year
+
+# ================================ Functions ===================================================
+person_list = []
+
+def add():
+    
+    if (len(name_entry.get()) != 0 and 
+        len(firstname_entry.get()) != 0 and  
+        len(email_address_entry.get()) != 0 and 
+        len(birthday_entry.get()) != 0):
+        try:
+            new_birthday = birthday_entry.get()
+            new_day = int(new_birthday[0:2])
+            new_month = int(new_birthday[3:5])
+            new_year = int(new_birthday[6:10])
+            person_list.append(Person(name_entry.get(), firstname_entry.get(), email_address_entry.get(), new_day, new_month, new_year))
+
+        except:
+            print("No valid value for birthday!")
+
+    else:
+        print("You have to enter a value in each entry field!")
+
 
 
 # ================================== GUI =======================================================
@@ -48,7 +72,7 @@ birthday_entry = ttk.Entry(root)
 birthday_entry.place(x = 150, y = 170)
 
 # Buttons:
-add_button = ttk.Button(root, text = "Add", width = 10)
+add_button = ttk.Button(root, text = "Add", width = 10, command = add)
 add_button.place(x = 30, y = 220)
 
 Update_button = ttk.Button(root, text = "Update", width = 10)
