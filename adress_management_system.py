@@ -42,6 +42,11 @@ def add():
 
         show()
 
+        name_entry.delete(0, 'end')
+        firstname_entry.delete(0, 'end')
+        email_address_entry.delete(0, 'end')
+        birthday_entry.delete(0, 'end')
+
     else:
         print("You have to enter a value in each entry field!")
 
