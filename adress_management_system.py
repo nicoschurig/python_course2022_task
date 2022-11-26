@@ -1,5 +1,16 @@
 import tkinter as tk
-from tkinter import ttk
+from tkinter import ttk, messagebox
+from tkinter import *
+
+# ================================= Class ======================================================
+class Person():
+    def __init__(self, name, first_name, email, day, month, year):
+        self._name = name
+        self._first_name = first_name
+        self._email = email
+        self._day = day
+        self._month = month
+        self._year = year
 
 
 # ================================== GUI =======================================================
@@ -45,6 +56,5 @@ Update_button.place(x = 170, y = 220)
 
 Delete_button = ttk.Button(root, text = "Delete", width = 10)
 Delete_button.place(x = 310, y = 220)
-
 
 root.mainloop()
