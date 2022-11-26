@@ -36,5 +36,15 @@ email_address_entry.place(x = 150, y = 140)
 birthday_entry = ttk.Entry(root)
 birthday_entry.place(x = 150, y = 170)
 
+# Buttons:
+add_button = ttk.Button(root, text = "Add", width = 10)
+add_button.place(x = 30, y = 220)
+
+Update_button = ttk.Button(root, text = "Update", width = 10)
+Update_button.place(x = 170, y = 220)
+
+Delete_button = ttk.Button(root, text = "Delete", width = 10)
+Delete_button.place(x = 310, y = 220)
+
 
 root.mainloop()
