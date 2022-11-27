@@ -1,3 +1,4 @@
+from importlib.metadata import entry_points
 import tkinter as tk
 import pickle
 from tkinter import ttk, messagebox
@@ -51,7 +52,6 @@ def add():
         print("You have to enter a value in each entry field!")
 
 def delete(): 
-
     selected_iid = listBox.focus()
     item_index = listBox.index(selected_iid)
 
@@ -62,6 +62,27 @@ def delete():
     person_pickle.close()
 
     show()
+
+def item_selected(e):
+    #Clear entry widgets
+    name_entry.delete(0, END)
+    firstname_entry.delete(0, END)
+    email_address_entry.delete(0, END)
+    birthday_entry.delete(0, END)
+
+    #Get record number
+    selected_iid = listBox.focus()
+
+    #Get record values
+    values = listBox.item(selected_iid, "values")
+
+    #Ouput to entry widget
+    name_entry.insert(0, values[0])
+    firstname_entry.insert(0, values[1])
+    email_address_entry.insert(0, values[2])
+    birthday_entry.insert(0, values[3])
+
+
 
 def show():
     if (os.stat("data.bin").st_size != 0):
@@ -132,14 +153,9 @@ for col in columns_tupel:
     listBox.grid(row = 1, column = 0, columnspan = 2)
     listBox.place(x = 10, y = 300)
 
-def item_selected(event):
-    for selected_item in listBox.selection():
-        item = listBox.item(selected_item)
-        record = item['values']
-        # show a message
-        showinfo(title='Information', message=','.join(record))
 
-listBox.bind('<<TreeviewSelect>>', item_selected)
+#Defines what happens, when a list record is selected
+listBox.bind('<ButtonRelease-1>', item_selected)
 
 show()  
 
