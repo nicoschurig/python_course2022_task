@@ -26,38 +26,59 @@ if (os.stat("data.bin").st_size != 0):
     person_list = pickle.load(person_pickle)
     person_pickle.close()
 
-def add():
-    
-    if (len(name_entry.get()) != 0 and 
+def check_for_valid_entry():
+    if(len(name_entry.get()) != 0 and 
         len(firstname_entry.get()) != 0 and  
         len(email_address_entry.get()) != 0 and 
         len(birthday_entry.get()) != 0):
-        
-        new_birthday = birthday_entry.get()
-        new_day = str(new_birthday[0:2])
-        new_month = str(new_birthday[3:5])
-        new_year = str(new_birthday[6:10])
-        person_list.append(Person(str(name_entry.get()), str(firstname_entry.get()), str(email_address_entry.get()), new_day, new_month, new_year))
+    
+        return True
+    
+    else:
+        #returns a statement in the concole, if atleast one entry widget is empty
+        print("You have to enter a value in each entry field!")
+        return False
 
+
+def add():
+    
+    #check if each entry widget contains a value
+    if (check_for_valid_entry()):
+        #Read data from file, stored it in person_list
+        person_pickle = open("data.bin", "rb")
+        person_list = pickle.load(person_pickle)
+        person_pickle.close()
+        
+        #Add the new Person to the end of the person_list
+        person_list.append(Person(name_entry.get(), 
+                                    firstname_entry.get(), 
+                                    email_address_entry.get(),
+                                    transform_birthday(birthday_entry.get(), "d"),
+                                    transform_birthday(birthday_entry.get(), "m"),
+                                    transform_birthday(birthday_entry.get(), "y")))
+
+        #Write updated person_list in the data file
         person_pickle = open("Data.bin", "wb")
         pickle.dump(person_list, person_pickle)
         person_pickle.close()
 
-        show()
+        #Display the new Record
+        listBox.insert(parent = "", index = END, iid = 0, text = "", values = (name_entry.get(),
+                                                                                firstname_entry.get(),
+                                                                                email_address_entry.get(),
+                                                                                birthday_entry.get()))
 
-        name_entry.delete(0, 'end')
-        firstname_entry.delete(0, 'end')
-        email_address_entry.delete(0, 'end')
-        birthday_entry.delete(0, 'end')
-
-    else:
-        print("You have to enter a value in each entry field!")
+        #Clear entry widgets
+        name_entry.delete(0, END)
+        firstname_entry.delete(0, END)
+        email_address_entry.delete(0, END)
+        birthday_entry.delete(0, END)
 
 def delete():
     #Get record number
     selected_iid = listBox.focus()
 
-    #Read data from file, store it in person_list
+    #Read data from file, stored it in person_list
     person_pickle = open("data.bin", "rb")
     person_list = pickle.load(person_pickle)
     person_pickle.close()
