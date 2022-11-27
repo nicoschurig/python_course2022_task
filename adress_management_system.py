@@ -6,6 +6,8 @@ from tkinter import *
 from tkinter.messagebox import showinfo
 import os
 
+from jinja2 import select_autoescape
+
 # ================================= Classes ======================================================
 class Person():
     def __init__(self, name, first_name, email, day, month, year):
@@ -97,6 +99,68 @@ def show():
             listBox.insert("", tk.END, values = (str(person._name), str(person._first_name), str(person._email), str(person._day) + "." + str(person._month) + "." + str(person._year)))
 
 
+def transform_birthday(new_birthday, identifier):
+    #returns value of day
+    if identifier == "d":
+        day = str(new_birthday[0:2])
+        return day
+    
+    #returns value of month
+    elif identifier == "m":
+        month = str(new_birthday[3:5])
+        return month
+    
+    #returns value of year
+    elif identifier == "y":
+        year = str(new_birthday[6:10])
+        return year
+    
+    else:
+        return "XX"
+        
+
+
+
+def update():
+    #Get record number
+    selected_iid = listBox.focus()
+
+    #Update record
+    listBox.item(selected_iid, values = (name_entry.get(), 
+                                        firstname_entry.get(), 
+                                        email_address_entry.get(), 
+                                        birthday_entry.get()))
+
+    #Read data from file, store it in person_list
+    person_pickle = open("data.bin", "rb")
+    person_list = pickle.load(person_pickle)
+    person_pickle.close()
+
+    #Get index of changed data record
+    record_index = listBox.index(selected_iid)
+
+    #Remove data from file at index of changed data record
+    del person_list[record_index]
+
+    #Write updated data (at the index of the changed data record) in person_list
+    person_list.insert(record_index, Person(name_entry.get(), 
+                                            firstname_entry.get(), 
+                                            email_address_entry.get(), 
+                                            transform_birthday(birthday_entry.get(), "d"),
+                                            transform_birthday(birthday_entry.get(), "m"),
+                                            transform_birthday(birthday_entry.get(), "y")))
+
+    #Write updated person_list in the data file
+    person_pickle = open("Data.bin", "wb")
+    pickle.dump(person_list, person_pickle)
+    person_pickle.close()
+
+    #Clear entry widgets
+    name_entry.delete(0, END)
+    firstname_entry.delete(0, END)
+    email_address_entry.delete(0, END)
+    birthday_entry.delete(0, END)
+
 
 # ================================== GUI =======================================================
 root = tk.Tk()
@@ -137,7 +201,7 @@ birthday_entry.place(x = 150, y = 170)
 add_button = ttk.Button(root, text = "Add", width = 10, command = add)
 add_button.place(x = 30, y = 220)
 
-Update_button = ttk.Button(root, text = "Update", width = 10)
+Update_button = ttk.Button(root, text = "Update", width = 10, command = update)
 Update_button.place(x = 170, y = 220)
 
 Delete_button = ttk.Button(root, text = "Delete", width = 10, command = delete)
