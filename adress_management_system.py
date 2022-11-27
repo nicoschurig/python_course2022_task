@@ -53,17 +53,36 @@ def add():
     else:
         print("You have to enter a value in each entry field!")
 
-def delete(): 
+def delete():
+    #Get record number
     selected_iid = listBox.focus()
+
+    #Read data from file, store it in person_list
+    person_pickle = open("data.bin", "rb")
+    person_list = pickle.load(person_pickle)
+    person_pickle.close()
+
+    #Get index of changed data record
     item_index = listBox.index(selected_iid)
 
+    #Remove data from file at index of changed data record
     del person_list[item_index]
 
+    #Write updated person_list in the data file
     person_pickle = open("Data.bin", "wb")
     pickle.dump(person_list, person_pickle)
     person_pickle.close()
 
-    show()
+    #Remove record
+    selected_record = listBox.selection()[0]
+    listBox.delete(selected_record)
+
+    #Clear entry widgets
+    name_entry.delete(0, END)
+    firstname_entry.delete(0, END)
+    email_address_entry.delete(0, END)
+    birthday_entry.delete(0, END)
+
 
 def item_selected(e):
     #Clear entry widgets
