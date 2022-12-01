@@ -6,6 +6,10 @@ This task is referring to the _**Python_Course for engineers and natural scienti
 ## Object Oriented Programming
 The goal is to write a simple GUI-Application, which implements an object oriented address-management. <br>
 
+## Requirements
+- install ```python3```
+- install [Tkinter Framework](https://tkdocs.com/tutorial/install.html) for python
+
 ## Process
 #### 1 - Getting Started
 - in order to get to realize a GUI-application in Python it is mandatory to learn something about a python GUI framework
