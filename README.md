@@ -1,5 +1,7 @@
 # python_course2022_task
+**The repository can be found on GitHub ([here](https://github.com/nicoschurig/python_course2022_task))** <br> <br>
 This task is referring to the _**Python_Course for engineers and natural scientists**_ of the TU Bergakademie Freiberg. <br>
+
 
 ## Object Oriented Programming
 The goal is to write a simple GUI-Application, which implements an object oriented address-management. <br>
@@ -15,3 +17,10 @@ The goal is to write a simple GUI-Application, which implements an object orient
 
 #### 3 - Implementing the task
 - with the new knowledge of Tkinter in combination with the knowledge from the _Python Course_ at the university, I was able to implement the required address-management GUI-application
+- the following UML-Diagram was used to create the code for the application:
+
+  ![UML-Diagram](classstructure_swe_exam.png)
+
+## Results
+- the program is currently working in the way required
+- still there need to be more changes made in order to realize a reliable Address Management System (especially to make it less error prone)
