@@ -23,7 +23,7 @@ The goal is to write a simple GUI-Application, which implements an object orient
 - with the new knowledge of Tkinter in combination with the knowledge from the _Python Course_ at the university, I was able to implement the required address-management GUI-application
 - the following UML-Diagram was used to create the code for the application:
 
-  ![UML-Diagram](classstructure_swe_exam.png)
+  ![UML-Diagram](UML/classstructure_swe_exam.png)
 
 ## Results
 - the program is currently working in the way required
