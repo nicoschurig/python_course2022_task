@@ -81,11 +81,14 @@ class DataManager():
 
 class AddressManager():
     #Constructor:
-    def __init__(self, file_name, root):
+    def __init__(self, root, data_manager: DataManager):
         #count variable for iid
         self.count = 0
 
-        self._filename = file_name
+        self._data_manager = data_manager
+
+        #read data from file and write it into self._person_list
+        self._person_list = self._data_manager.read_data()
 
         #displays Headline at the center-top of the window
         self.title_label = ttk.Label(root, text = "Address Management System", font = (None, 40))
@@ -144,18 +147,27 @@ class AddressManager():
 
         self.show()
 
+    @property
+    def data_manager(self) -> DataManager:
+        return self._data_manager
+
+    @property
+    def person_list(self):
+        return self._person_list
+
+
     #Methods:
-    def read_data(self):                                #reads data from file, given by name (_filename)
-        person_pickle = open(self._filename, "rb")
-        person_list = pickle.load(person_pickle)
-        person_pickle.close()
+    #def read_data(self):                                #reads data from file, given by name (_filename)
+        #person_pickle = open(self._filename, "rb")
+        #person_list = pickle.load(person_pickle)
+        #person_pickle.close()
 
-        return person_list
+        #return person_list
 
-    def write_data(self, person_list):                  #writes data into file given by name (_filename)
-        person_pickle = open(self._filename, "wb")
-        pickle.dump(person_list, person_pickle)
-        person_pickle.close()
+    #def write_data(self, person_list):                  #writes data into file given by name (_filename)
+        #person_pickle = open(self._filename, "wb")
+        #pickle.dump(person_list, person_pickle)
+        #person_pickle.close()
 
     def clear_entry_widgets(self):                      #deletes text out of the entry widgets
         self.name_entry.delete(0, END)
@@ -168,11 +180,13 @@ class AddressManager():
     def add(self):
         #check if each entry widget contains a value
         if (self.check_for_valid_entry()):
-            #Read data from file, stored it in person_list
-            person_list = self.read_data()
+            #Reads data from file, stores it in person_list
+            #person_list = self.read_data()
+            #self._person_list = self._data_manager.read_data()
+
         
             #Add the new Person to the end of the person_list
-            person_list.append(Person(self.name_entry.get(), 
+            self._person_list.append(Person(self.name_entry.get(), 
                                     self.firstname_entry.get(), 
                                     self.email_address_entry.get(),
                                     self.transform_birthday(self.birthday_entry.get(), "d"),
@@ -182,7 +196,7 @@ class AddressManager():
             
 
             #Write updated person_list in the data file
-            self.write_data(person_list)
+            #self.write_data(person_list)
 
             #Display the new Record
             self.listBox.insert(parent = "", index = END, iid = self.count, text = "", values = (self.name_entry.get(),
@@ -198,16 +212,16 @@ class AddressManager():
         selected_iid = self.listBox.focus()
 
         #Read data from file, stored it in person_list
-        person_list = self.read_data()
+        #person_list = self.read_data()
 
         #Get index of changed data record
         item_index = self.listBox.index(selected_iid)
 
         #Remove data from file at index of changed data record
-        del person_list[item_index]
+        del self._person_list[item_index]
 
         #Write updated person_list in the data file
-        self.write_data(person_list)
+        #self.write_data(person_list)
 
         #Remove record
         selected_record = self.listBox.selection()[0]
@@ -226,16 +240,16 @@ class AddressManager():
                                         self.birthday_entry.get()))
 
         #Read data from file, store it in person_list
-        person_list = self.data_read()
+        #person_list = self.data_read()
 
         #Get index of changed data record
         record_index = self.listBox.index(selected_iid)
 
         #Remove data from file at index of changed data record
-        del person_list[record_index]
+        del self._person_list[record_index]
 
         #Write updated data (at the index of the changed data record) in person_list
-        person_list.insert(record_index, Person(self.name_entry.get(), 
+        self._person_list.insert(record_index, Person(self.name_entry.get(), 
                                             self.firstname_entry.get(), 
                                             self.email_address_entry.get(), 
                                             self.transform_birthday(self.birthday_entry.get(), "d"),
@@ -243,7 +257,7 @@ class AddressManager():
                                             self.transform_birthday(self.birthday_entry.get(), "y")))
 
         #Write updated person_list in the data file
-        self.write_data(person_list)
+        #self.write_data(person_list)
 
         self.clear_entry_widgets()
 
@@ -302,13 +316,13 @@ class AddressManager():
     #displays data at the start of the GUI
     def show(self):
         
-        if (os.stat(self._filename).st_size != 0):
-            person_list = self.read_data()
+        if (os.stat(self._data_manager.filename).st_size != 0):
+            #self._person_list = self._data_manager.read_data()
 
             for item in self.listBox.get_children():
                 self.listBox.delete(item)
 
-            for person in person_list:
+            for person in self._person_list:
                 self.listBox.insert("", tk.END, values = (str(person._name), str(person._first_name), str(person._email), str(person._day) + "." + str(person._month) + "." + str(person._year)))
 
 # ======================================================== Program ========================================================
