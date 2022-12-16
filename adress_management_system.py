@@ -14,6 +14,39 @@ class Person():
         self._month = month
         self._year = year
 
+        @property
+        def getName(self) -> str:           #Getter for name
+            return self._name
+        
+        def setName(self, newname: str):    #Setter for name
+            self._name = newname
+
+        def getFirstName(self) -> str:                  #Getter for first name
+            return self._first_name
+
+        def setFirstName(self, newfirstname: str):      #Setter for first name
+            self._first_name = newfirstname
+
+        def getDay(self) -> int:                        #Getter for day
+            return self._day
+
+        def setDay(self, newday: int):                  #Setter for day
+            self._day = newday
+
+        def getMonth(self) -> int:                      #Getter for month
+            return self._month
+
+        def setMonth(self, newmonth: int):              #Setter for month
+            self._month = newmonth
+
+        def getYear(self) -> int:                       #Getter for year
+            return self._year
+        
+        def setYear(self, newyear: int):                #Setter for year
+            self._year = newyear
+
+
+
 class AddressManager():
     #Constructor:
     def __init__(self, file_name, root):
