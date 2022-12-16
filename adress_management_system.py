@@ -157,17 +157,6 @@ class AddressManager():
 
 
     #Methods:
-    #def read_data(self):                                #reads data from file, given by name (_filename)
-        #person_pickle = open(self._filename, "rb")
-        #person_list = pickle.load(person_pickle)
-        #person_pickle.close()
-
-        #return person_list
-
-    #def write_data(self, person_list):                  #writes data into file given by name (_filename)
-        #person_pickle = open(self._filename, "wb")
-        #pickle.dump(person_list, person_pickle)
-        #person_pickle.close()
 
     def clear_entry_widgets(self):                      #deletes text out of the entry widgets
         self.name_entry.delete(0, END)
@@ -180,10 +169,6 @@ class AddressManager():
     def add(self):
         #check if each entry widget contains a value
         if (self.check_for_valid_entry()):
-            #Reads data from file, stores it in person_list
-            #person_list = self.read_data()
-            #self._person_list = self._data_manager.read_data()
-
         
             #Add the new Person to the end of the person_list
             self._person_list.append(Person(self.name_entry.get(), 
@@ -192,11 +177,6 @@ class AddressManager():
                                     self.transform_birthday(self.birthday_entry.get(), "d"),
                                     self.transform_birthday(self.birthday_entry.get(), "m"),
                                     self.transform_birthday(self.birthday_entry.get(), "y")))
-
-            
-
-            #Write updated person_list in the data file
-            #self.write_data(person_list)
 
             #Display the new Record
             self.listBox.insert(parent = "", index = END, iid = self.count, text = "", values = (self.name_entry.get(),
@@ -211,17 +191,11 @@ class AddressManager():
         #Get record number
         selected_iid = self.listBox.focus()
 
-        #Read data from file, stored it in person_list
-        #person_list = self.read_data()
-
         #Get index of changed data record
         item_index = self.listBox.index(selected_iid)
 
         #Remove data from file at index of changed data record
         del self._person_list[item_index]
-
-        #Write updated person_list in the data file
-        #self.write_data(person_list)
 
         #Remove record
         selected_record = self.listBox.selection()[0]
@@ -239,9 +213,6 @@ class AddressManager():
                                         self.email_address_entry.get(), 
                                         self.birthday_entry.get()))
 
-        #Read data from file, store it in person_list
-        #person_list = self.data_read()
-
         #Get index of changed data record
         record_index = self.listBox.index(selected_iid)
 
@@ -255,9 +226,6 @@ class AddressManager():
                                             self.transform_birthday(self.birthday_entry.get(), "d"),
                                             self.transform_birthday(self.birthday_entry.get(), "m"),
                                             self.transform_birthday(self.birthday_entry.get(), "y")))
-
-        #Write updated person_list in the data file
-        #self.write_data(person_list)
 
         self.clear_entry_widgets()
 
@@ -317,8 +285,6 @@ class AddressManager():
     def show(self):
         
         if (os.stat(self._data_manager.filename).st_size != 0):
-            #self._person_list = self._data_manager.read_data()
-
             for item in self.listBox.get_children():
                 self.listBox.delete(item)
 
